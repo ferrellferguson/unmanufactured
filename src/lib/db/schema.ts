@@ -321,6 +321,18 @@ export const contextRejectionsRelations = relations(
   })
 );
 
+// ─── FEEDBACK ─────────────────────────────────────────
+export const feedback = pgTable("feedback", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  message: text("message").notNull(),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Feedback = typeof feedback.$inferSelect;
+export type NewFeedback = typeof feedback.$inferInsert;
+
 // ─── CHAT MESSAGES ────────────────────────────────────
 export const chatMessages = pgTable(
   "chat_messages",

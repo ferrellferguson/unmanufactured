@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
+import { FeedbackButton } from "@/components/feedback/feedback-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,6 +54,7 @@ export default function RootLayout({
               >
                 + New Event
               </Link>
+              <FeedbackButton />
             </nav>
           </div>
         </header>
