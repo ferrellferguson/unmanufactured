@@ -21,10 +21,11 @@ export async function POST(request: NextRequest) {
 
   // Send email notification (best-effort, don't fail the request)
   const feedbackEmail = process.env.FEEDBACK_EMAIL;
-  if (process.env.RESEND_API_KEY && feedbackEmail) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey && feedbackEmail) {
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
+      const resend = new Resend(resendKey);
+      const result = await resend.emails.send({
         from: "Unmanufactured Feedback <feedback@unmanufactured.org>",
         to: feedbackEmail,
         subject: `New feedback${name ? ` from ${name}` : ""}`,
@@ -37,9 +38,12 @@ export async function POST(request: NextRequest) {
           .filter(Boolean)
           .join("\n\n"),
       });
+      console.log("Feedback email sent:", JSON.stringify(result));
     } catch (err) {
       console.error("Failed to send feedback email:", err);
     }
+  } else {
+    console.warn("Feedback email skipped: RESEND_API_KEY or FEEDBACK_EMAIL not set");
   }
 
   return NextResponse.json({ id: row.id }, { status: 201 });

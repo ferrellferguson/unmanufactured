@@ -210,7 +210,7 @@ export default function EventDetailPage() {
               {event.status}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
-              Threshold: {event.driftThreshold.toFixed(2)}
+              Threshold: {(event.driftThreshold * 100).toFixed(0)}%
             </span>
             <span className="text-xs text-muted-foreground font-mono">
               {timeline?.snapshots.length ?? 0} snapshots

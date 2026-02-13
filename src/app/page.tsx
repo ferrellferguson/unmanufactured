@@ -201,7 +201,7 @@ export default function HomePage() {
                   <CardContent>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground font-mono">
                       <span>
-                        Drift threshold: {event.driftThreshold.toFixed(2)}
+                        Drift threshold: {(event.driftThreshold * 100).toFixed(0)}%
                       </span>
                       <span>
                         Created:{" "}

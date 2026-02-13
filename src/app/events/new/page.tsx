@@ -23,7 +23,7 @@ export default function NewEventPage() {
     "## Event to Analyze\n\nProvide a comprehensive, factual analysis of this event. Focus on verified facts, note uncertainties, and flag any claims that lack supporting evidence."
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [driftThreshold, setDriftThreshold] = useState("0.05");
+  const [driftThreshold, setDriftThreshold] = useState("5");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -40,7 +40,7 @@ export default function NewEventPage() {
             ? promptTemplate
             : `## Event: ${title}\n\n${promptTemplate}`,
           searchQuery: searchQuery || undefined,
-          driftThreshold: parseFloat(driftThreshold),
+          driftThreshold: parseFloat(driftThreshold) / 100,
         }),
       });
 
@@ -122,20 +122,20 @@ export default function NewEventPage() {
 
             <div className="space-y-2">
               <Label htmlFor="threshold">
-                Drift Threshold (0.01 - 0.50)
+                Drift Threshold (1% - 50%)
               </Label>
               <Input
                 id="threshold"
                 type="number"
-                min="0.01"
-                max="0.50"
-                step="0.01"
+                min="1"
+                max="50"
+                step="1"
                 value={driftThreshold}
                 onChange={(e) => setDriftThreshold(e.target.value)}
               />
               <p className="text-xs text-muted-foreground">
                 Narrative shifts above this threshold are flagged. Lower =
-                more sensitive. Default 0.05.
+                more sensitive. Default 5%.
               </p>
             </div>
 
