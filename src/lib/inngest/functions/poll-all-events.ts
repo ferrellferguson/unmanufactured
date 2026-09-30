@@ -5,8 +5,12 @@ import { eq } from "drizzle-orm";
 import { isDueForPoll } from "@/lib/polling/intervals";
 
 export const pollAllEvents = inngest.createFunction(
-  { id: "poll-all-events", name: "Poll All Active Events" },
-  { cron: "*/15 * * * *" }, // Every 15 minutes — adaptive logic decides who actually polls
+  {
+    id: "poll-all-events",
+    name: "Poll All Active Events",
+    // Every 15 minutes — adaptive logic decides who actually polls
+    triggers: [{ cron: "*/15 * * * *" }],
+  },
   async ({ step }) => {
     const activeEvents = await step.run("fetch-active-events", async () => {
       return db
