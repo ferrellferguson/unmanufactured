@@ -25,8 +25,8 @@ export const pollSingleEvent = inngest.createFunction(
     name: "Poll Single Event",
     concurrency: { limit: 2 },
     retries: 2,
+    triggers: [{ event: "app/poll.single-event" }],
   },
-  { event: "app/poll.single-event" },
   async ({ event, step }) => {
     const { eventId } = event.data;
 

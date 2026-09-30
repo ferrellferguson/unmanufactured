@@ -22,7 +22,12 @@ Narrative drift tracker — polls multiple AI models about the same news event o
 - Migrations are manual SQL files in `drizzle/` with corresponding runner scripts in `scripts/migrate-XXXX.mjs`
 - Migration scripts use `@neondatabase/serverless` directly (see `scripts/migrate-0002.mjs` for pattern)
 
-### Inngest
+### Inngest (SDK v4)
+- `createFunction` takes **two** args: triggers live in the config object as `triggers: [...]`, not as a second positional arg
+- v4 defaults to **cloud mode** — the client sets `isDev` from `NODE_ENV`, and production needs `INNGEST_SIGNING_KEY`
+- Checkpointing is on by default (several steps per request). Client sets `checkpointing.maxRuntime` to 90s, under the route’s `maxDuration = 120`
+- `serve()` uses `serveOrigin` (renamed from `serveHost` in v4); `servePath` is unchanged
+- Use `group.parallel()` for `Promise.race` semantics — optimized parallelism makes plain `Promise.race` wait for all steps to settle
 - Step results are JSON-serialized — Dates become strings. Functions consuming step data must accept `Date | string`.
 - Concurrency limit of 2 for poll-single-event
 
