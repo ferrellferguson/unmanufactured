@@ -1,6 +1,12 @@
 import { tavily } from "@tavily/core";
 
-const client = tavily({ apiKey: process.env.TAVILY_API_KEY! });
+// Created on first use so builds don't fail when TAVILY_API_KEY isn't set
+let client: ReturnType<typeof tavily> | undefined;
+
+function getClient() {
+  client ??= tavily({ apiKey: process.env.TAVILY_API_KEY! });
+  return client;
+}
 
 export interface SearchResult {
   title: string;
@@ -14,7 +20,7 @@ export async function searchForEvent(
   query: string,
   maxResults = 10
 ): Promise<SearchResult[]> {
-  const response = await client.search(query, {
+  const response = await getClient().search(query, {
     searchDepth: "advanced",
     maxResults,
     includeRawContent: false,
